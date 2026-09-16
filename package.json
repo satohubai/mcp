@@ -1,0 +1,20 @@
+{
+  "name": "@satohub/mcp",
+  "version": "1.0.0",
+  "description": "Sato Hub MCP server — stdio shim over the hosted Streamable HTTP endpoint (https://satohub.ai/api/mcp). Scored index of onchain-agent tooling, agent-economy numbers, passports.",
+  "license": "MIT",
+  "author": "Sato Hub",
+  "homepage": "https://satohub.ai/mcp",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/satohubai/mcp.git"
+  },
+  "bugs": { "url": "https://github.com/satohubai/mcp/issues" },
+  "type": "module",
+  "bin": { "satohub-mcp": "bin/satohub-mcp.mjs" },
+  "files": ["bin/", "README.md", "LICENSE"],
+  "keywords": ["mcp", "model-context-protocol", "onchain agents", "crypto agents", "x402", "erc-8004", "wallets", "sato hub", "sato score", "web3"],
+  "engines": { "node": ">=18" },
+  "dependencies": { "mcp-remote": "^0.8.5" },
+  "publishConfig": { "access": "public" }
+}

@@ -4,13 +4,20 @@
 
 **Query the scored, daily-updated index of the onchain agent stack — live, from your agent.**
 
-Streamable HTTP · read-only · no API key
+`npx -y @satohub/mcp` · Streamable HTTP · no API key · non-custodial
 
-**[satohub.ai/mcp](https://satohub.ai/mcp?utm_source=github&utm_medium=mcp-repo&utm_campaign=onchain-agents)** · **[the index](https://github.com/satohubai/onchain-agents)** · **[satohub.ai](https://satohub.ai?utm_source=github&utm_medium=mcp-repo&utm_campaign=onchain-agents)**
+[![npm](https://img.shields.io/npm/v/%40satohub%2Fmcp?label=%40satohub%2Fmcp&color=0b0f14)](https://www.npmjs.com/package/@satohub/mcp)
+[![license](https://img.shields.io/badge/license-MIT-0b0f14)](./LICENSE)
+
+**[satohub.ai/mcp](https://satohub.ai/mcp?utm_source=github&utm_medium=mcp-repo&utm_campaign=onchain-agents)** · **[the index](https://github.com/satohubai/onchain-agents)** · **[framework plugins](https://github.com/satohubai/sato-hub-integrations)** · **[satohub.ai](https://satohub.ai?utm_source=github&utm_medium=mcp-repo&utm_campaign=onchain-agents)**
 
 </div>
 
 ---
+
+- **What this is.** The Sato Hub MCP server: 32 tools over the scored index of what onchain agents are built from (frameworks, MCP servers, wallets, x402 and stablecoin payment rails, ERC-8004 identity, trading venues, agent skills), plus measured agent-economy numbers, Agent Passports, Preflight and Sato Route. This repo holds `@satohub/mcp`, the stdio shim for clients that cannot speak HTTP.
+- **What a Sato Score is.** A 0–100 measure of how **open, active and verifiable** a project is, computed from evidence only. It is **not** a safety, quality, security or returns grade, and self-reported is never treated as verified. [Methodology →](https://satohub.ai/sato-score?utm_source=github&utm_medium=mcp-repo&utm_campaign=onchain-agents)
+- **Non-custodial.** Nothing here signs a transaction, holds a key or moves funds. Route and swap tools return unsigned objects for your own signer, and every refusal names its rule.
 
 ## Endpoint
 
@@ -18,7 +25,7 @@ Streamable HTTP · read-only · no API key
 POST https://satohub.ai/api/mcp
 ```
 
-Model Context Protocol over Streamable HTTP. 12 read-only tools over the Sato Hub directory (211+ scored resources), agent passports, deploy specs, news, and live metrics. Trust rules are enforced server-side: nothing is returned as verified/safe/profitable unless evidence supports it.
+Model Context Protocol over Streamable HTTP. If your client speaks HTTP, use this URL directly and skip the package.
 
 ## Connect
 
@@ -28,42 +35,47 @@ Model Context Protocol over Streamable HTTP. 12 read-only tools over the Sato Hu
 claude mcp add --transport http satohub https://satohub.ai/api/mcp
 ```
 
-**Claude Desktop / Cursor** (via `mcp-remote`)
+**Claude Desktop** (`claude_desktop_config.json`) · **Cursor** (`.cursor/mcp.json`) · **Windsurf** (`mcp_config.json`)
 
 ```json
 {
   "mcpServers": {
-    "satohub": {
-      "command": "npx",
-      "args": ["-y", "mcp-remote", "https://satohub.ai/api/mcp"]
-    }
+    "satohub": { "command": "npx", "args": ["-y", "@satohub/mcp"] }
   }
 }
 ```
 
-**Any MCP client** — point it at the endpoint above; no auth handshake needed.
+**VS Code, Codex, any Streamable HTTP client**
 
-## Tools
+```json
+{ "mcpServers": { "satohub": { "type": "http", "url": "https://satohub.ai/api/mcp" } } }
+```
 
-| Tool | What it does |
+The shim wraps [`mcp-remote`](https://www.npmjs.com/package/mcp-remote) against the hosted endpoint. Extra arguments are forwarded to it; `SATOHUB_MCP_ENDPOINT` overrides the endpoint.
+
+## The 32 tools
+
+All names are prefixed `onchain_agent_`.
+
+| Layer | Tools |
 |---|---|
-| `onchain_agent_search_resources` | Search the index — text, category, chain filters |
-| `onchain_agent_get_resource` | Full listing detail: Sato Score, liveness, provenance-backed fields |
-| `onchain_agent_get_deploy_spec` | Docker-verified install/entry spec for a listing |
-| `onchain_agent_list_categories` | Category vocabulary |
-| `onchain_agent_list_chains` | Chain vocabulary |
-| `onchain_agent_search_agents` | Search the Agent Passport registry |
-| `onchain_agent_get_agent_passport` | One agent's passport: identity, wallet verification, on-chain checks |
-| `onchain_agent_get_news` | The filtered onchain-agent news feed |
-| `onchain_agent_get_metrics` | Live metrics (e.g. the ERC-8004 registered-agent count) |
-| `onchain_agent_recent_changes` | The changelog feed — what changed in the index |
-| `onchain_agent_list_wiki_pages` / `onchain_agent_get_wiki_page` | The wiki |
+| **Find and judge** | `search_resources` · `get_resource` · `compare_listings` · `recommend_stack` · `get_deploy_spec` · `get_score_methodology` · `get_listing_history` |
+| **Check before you act** | `preflight` · `watch` |
+| **Route** (quotes, unsigned) | `route_swap` · `swap` · `route_agent` · `route_launch` · `route_lp` |
+| **Build** | `build_plan` · `scaffold_plan` |
+| **Agent economy & numbers** | `get_agent_economy` · `get_trend` · `explain_number` · `get_metrics` |
+| **Agents & skills** | `search_agents` · `get_agent_passport` · `search_skills` |
+| **Stay current** | `recent_changes` · `get_changes` · `get_news` |
+| **Reference** | `list_categories` · `list_chains` · `list_wiki_pages` · `get_wiki_page` |
+| **File** (the only writes) | `submit_project` · `register_agent` — a submission or a self-reported registration, never a listing and never a verification |
+
+Every record carries `sato_url` (its canonical page) and, where scored, `verify_url` (the Sato Score report). Cite the `sato_url` when you surface a record so the reader can check its current state. Preflight verdicts and route decisions leave the server with a detached Ed25519 signature — [the scheme](https://satohub.ai/.well-known/sato-signing.json).
 
 ## Try it in 10 seconds
 
 Ask your MCP-connected agent:
 
-> "Search the Sato Hub index for Solana trading MCP servers with a Sato Score above 70, and give me the deploy spec for the best one."
+> "Search the Sato Hub index for Solana trading MCP servers with a Sato Score above 70, run Preflight on the top one, and give me its deploy spec."
 
 No MCP client? The raw feed works anywhere:
 
@@ -71,10 +83,10 @@ No MCP client? The raw feed works anywhere:
 curl -s https://satohub.ai/api/export/index.json | jq '.resources[] | select(.trust_score > 80) | .name'
 ```
 
-## What the scores mean
+## What the numbers mean
 
-The **Sato Score** is a 0–100 evidence-based measure of how *open, active, and verifiable* a project is — [methodology](https://satohub.ai/sato-score?utm_source=github&utm_medium=mcp-repo&utm_campaign=onchain-agents). It is not a safety, quality, or returns grade, and the server will never tell your agent otherwise.
+`verification_status` separates self-reported from verified. In agent-economy data `null` means unknown, never zero, and rows are never summed across venues, chains or stages. A Preflight `unknown` is a refusal to guess, not a pass.
 
 ---
 
-<sub>Maintained by [Sato Hub](https://satohub.ai?utm_source=github&utm_medium=mcp-repo&utm_campaign=onchain-agents) — the agent builder hub for crypto. Server implementation: `mcp-handler` on Next.js, read-only. MIT © Prime Signal LLC (this documentation); index data CC-BY-4.0, *data by satohub.ai*.</sub>
+<sub>Maintained by [Sato Hub](https://satohub.ai?utm_source=github&utm_medium=mcp-repo&utm_campaign=onchain-agents) — the agent builder hub for crypto. Server: `mcp-handler` on Next.js. MIT © Sato Hub (this package and documentation); index data CC-BY-4.0, *data by satohub.ai*.</sub>
