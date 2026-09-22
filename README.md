@@ -4,7 +4,7 @@
 
 **Query the scored, daily-updated index of the onchain agent stack — live, from your agent.**
 
-`npx -y @satohub/mcp` · Streamable HTTP · no API key · non-custodial
+`npx -y @satohub/mcp` · Streamable HTTP · 32 tools · four can change Sato Hub state · no API key
 
 [![npm](https://img.shields.io/npm/v/%40satohub%2Fmcp?label=%40satohub%2Fmcp&color=0b0f14)](https://www.npmjs.com/package/@satohub/mcp)
 [![license](https://img.shields.io/badge/license-MIT-0b0f14)](./LICENSE)
@@ -60,14 +60,16 @@ All names are prefixed `onchain_agent_`.
 | Layer | Tools |
 |---|---|
 | **Find and judge** | `search_resources` · `get_resource` · `compare_listings` · `recommend_stack` · `get_deploy_spec` · `get_score_methodology` · `get_listing_history` |
-| **Check before you act** | `preflight` · `watch` |
-| **Route** (quotes, unsigned) | `route_swap` · `swap` · `route_agent` · `route_launch` · `route_lp` |
+| **Check before you act** | `preflight` · `watch` ▲ |
+| **Route** (quotes, unsigned) | `route_swap` · `swap` ▲ · `route_agent` · `route_launch` · `route_lp` |
 | **Build** | `build_plan` · `scaffold_plan` |
 | **Agent economy & numbers** | `get_agent_economy` · `get_trend` · `explain_number` · `get_metrics` |
 | **Agents & skills** | `search_agents` · `get_agent_passport` · `search_skills` |
 | **Stay current** | `recent_changes` · `get_changes` · `get_news` |
 | **Reference** | `list_categories` · `list_chains` · `list_wiki_pages` · `get_wiki_page` |
-| **File** (the only writes) | `submit_project` · `register_agent` — a submission or a self-reported registration, never a listing and never a verification |
+| **File** | `submit_project` ▲ · `register_agent` ▲ — a submission or a self-reported registration, never a listing and never a verification |
+
+▲ Twenty-eight tools are read-only. Four can change Sato Hub state: `watch` creates a monitor, `submit_project` queues a submission, `register_agent` creates or pends a self-reported passport, and `swap` in `build-tx` mode records a receipt for an unsigned transaction. None signs, holds or broadcasts funds.
 
 Every record carries `sato_url` (its canonical page) and, where scored, `verify_url` (the Sato Score report). Cite the `sato_url` when you surface a record so the reader can check its current state. Preflight verdicts and route decisions leave the server with a detached Ed25519 signature — [the scheme](https://satohub.ai/.well-known/sato-signing.json).
 
