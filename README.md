@@ -4,7 +4,7 @@
 
 **Query the scored, daily-updated index of the onchain agent stack — live, from your agent.**
 
-`npx -y @satohub/mcp` · Streamable HTTP · 32 tools · four can change Sato Hub state · no API key
+`npx -y @satohub/mcp` · Streamable HTTP · 35 tools · four can change Sato Hub state · no API key
 
 [![npm](https://img.shields.io/npm/v/%40satohub%2Fmcp?label=%40satohub%2Fmcp&color=0b0f14)](https://www.npmjs.com/package/@satohub/mcp)
 [![license](https://img.shields.io/badge/license-MIT-0b0f14)](./LICENSE)
@@ -15,7 +15,7 @@
 
 ---
 
-- **What this is.** The Sato Hub MCP server: 32 tools over the scored index of what onchain agents are built from (frameworks, MCP servers, wallets, x402 and stablecoin payment rails, ERC-8004 identity, trading venues, agent skills), plus measured agent-economy numbers, Agent Passports, Preflight and Sato Route. This repo holds `@satohub/mcp`, the stdio shim for clients that cannot speak HTTP.
+- **What this is.** The Sato Hub MCP server: 35 tools over the scored index of what onchain agents are built from (frameworks, MCP servers, wallets, x402 and stablecoin payment rails, ERC-8004 identity, trading venues, agent skills), plus measured agent-economy numbers, Agent Passports, Preflight and Sato Route. This repo holds `@satohub/mcp`, the stdio shim for clients that cannot speak HTTP.
 - **What a Sato Score is.** A 0–100 measure of how **open, active and verifiable** a project is, computed from evidence only. It is **not** a safety, quality, security or returns grade, and self-reported is never treated as verified. [Methodology →](https://satohub.ai/sato-score?utm_source=github&utm_medium=mcp-repo&utm_campaign=onchain-agents)
 - **Non-custodial.** Nothing here signs a transaction, holds a key or moves funds. Route and swap tools return unsigned objects for your own signer, and every refusal names its rule.
 
@@ -53,7 +53,7 @@ claude mcp add --transport http satohub https://satohub.ai/api/mcp
 
 The shim wraps [`mcp-remote`](https://www.npmjs.com/package/mcp-remote) against the hosted endpoint. Extra arguments are forwarded to it; `SATOHUB_MCP_ENDPOINT` overrides the endpoint.
 
-## The 32 tools
+## The 35 tools
 
 All names are prefixed `onchain_agent_`.
 
@@ -64,12 +64,12 @@ All names are prefixed `onchain_agent_`.
 | **Route** (quotes, unsigned) | `route_swap` · `swap` ▲ · `route_agent` · `route_launch` · `route_lp` |
 | **Build** | `build_plan` · `scaffold_plan` |
 | **Agent economy & numbers** | `get_agent_economy` · `get_trend` · `explain_number` · `get_metrics` |
-| **Agents & skills** | `search_agents` · `get_agent_passport` · `search_skills` |
-| **Stay current** | `recent_changes` · `get_changes` · `get_news` |
+| **Agents & skills** | `search_agents` · `get_agent_passport` · `search_skills` · `search_listings` · `inspect_listing` |
+| **Stay current** | `recent_changes` · `get_changes` · `get_news` · `get_data_freshness` |
 | **Reference** | `list_categories` · `list_chains` · `list_wiki_pages` · `get_wiki_page` |
 | **File** | `submit_project` ▲ · `register_agent` ▲ — a submission or a self-reported registration, never a listing and never a verification |
 
-▲ Twenty-eight tools are read-only. Four can change Sato Hub state: `watch` creates a monitor, `submit_project` queues a submission, `register_agent` creates or pends a self-reported passport, and `swap` in `build-tx` mode records a receipt for an unsigned transaction. None signs, holds or broadcasts funds.
+▲ Thirty-one tools are read-only. Four can change Sato Hub state: `watch` creates a monitor, `submit_project` queues a submission, `register_agent` creates or pends a self-reported passport, and `swap` in `build-tx` mode records a receipt for an unsigned transaction. None signs, holds or broadcasts funds.
 
 Every record carries `sato_url` (its canonical page) and, where scored, `verify_url` (the Sato Score report). Cite the `sato_url` when you surface a record so the reader can check its current state. Preflight verdicts and route decisions leave the server with a detached Ed25519 signature — [the scheme](https://satohub.ai/.well-known/sato-signing.json).
 
